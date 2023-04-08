@@ -1,0 +1,21 @@
+[package]
+name = "learning_rust"
+version = "0.1.0"
+edition = "2021"
+authors = ["Jonathan Vargas"]
+
+[[bin]]
+name = "hello"
+path = "01_basic_concepts/hello.rs"
+
+[[bin]]
+name = "variables"
+path = "01_basic_concepts/variables.rs"
+
+[[bin]]
+name = "shadowing"
+path = "01_basic_concepts/shadowing.rs"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
