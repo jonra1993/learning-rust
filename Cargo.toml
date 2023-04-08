@@ -5,16 +5,65 @@ edition = "2021"
 authors = ["Jonathan Vargas"]
 
 [[bin]]
-name = "hello"
-path = "01_basic_concepts/hello.rs"
+name = "1hello"
+path = "01_basic_concepts/1hello.rs"
 
 [[bin]]
-name = "variables"
-path = "01_basic_concepts/variables.rs"
+name = "2variables"
+path = "01_basic_concepts/2variables.rs"
 
 [[bin]]
-name = "shadowing"
-path = "01_basic_concepts/shadowing.rs"
+name = "3shadowing"
+path = "01_basic_concepts/3shadowing.rs"
+
+[[bin]]
+name = "4scalar_types"
+path = "01_basic_concepts/4scalar_types.rs"
+
+[[bin]]
+name = "5compound_types"
+path = "01_basic_concepts/5compound_types.rs"
+
+[[bin]]
+name = "basic"
+path = "02_functions/basic.rs"
+
+[[bin]]
+name = "if"
+path = "03_control_flow/if.rs"
+
+[[bin]]
+name = "loop"
+path = "03_control_flow/loop.rs"
+
+[[bin]]
+name = "while"
+path = "03_control_flow/while.rs"
+
+[[bin]]
+name = "for"
+path = "03_control_flow/for.rs"
+
+[[bin]]
+name = "owner"
+path = "04_ownership/owner.rs"
+
+[[bin]]
+name = "scope"
+path = "04_ownership/scope.rs"
+
+[[bin]]
+name = "owner_function"
+path = "04_ownership/owner_function.rs"
+
+[[bin]]
+name = "reference_function"
+path = "04_ownership/reference_function.rs"
+
+[[bin]]
+name = "slices"
+path = "04_ownership/slices.rs"
+
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
