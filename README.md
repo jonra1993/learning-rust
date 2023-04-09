@@ -42,6 +42,8 @@ cargo build --release # Generates production artifacts
 cargo run --bin hello
 
 
+cargo add actix-web
+
 
 ## Data types 
 

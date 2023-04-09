@@ -5,6 +5,10 @@ edition = "2021"
 authors = ["Jonathan Vargas"]
 
 [[bin]]
+name = "main"
+path = "src/main.rs"
+
+[[bin]]
 name = "1hello"
 path = "01_basic_concepts/1hello.rs"
 
@@ -84,8 +88,39 @@ path = "06_another_patterns/option_enum.rs"
 name = "match"
 path = "06_another_patterns/match.rs"
 
+[[bin]]
+name = "vectors"
+path = "08_common_collections/vectors.rs"
 
+[[bin]]
+name = "strings"
+path = "08_common_collections/strings.rs"
+
+[[bin]]
+name = "hash_maps"
+path = "08_common_collections/hash_maps.rs"
+
+[[bin]]
+name = "result"
+path = "09_error_handling/result.rs"
+
+[[bin]]
+name = "closures"
+path = "09_error_handling/closures.rs"
+
+[[bin]]
+name = "generic_types"
+path = "10_generics_traits_lifetimes/generic_types.rs"
+
+[[bin]]
+name = "traits"
+path = "10_generics_traits_lifetimes/traits.rs"
+
+[[bin]]
+name = "lifetime"
+path = "10_generics_traits_lifetimes/lifetime.rs"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+actix-web = "4.3.1"
