@@ -1,10 +1,17 @@
-use actix_web::{
-    get, post,
-    web::{self, Json},
-    App, Error, HttpResponse, HttpServer, Responder, middleware::Logger,
+use actix_web::{middleware::Logger, App, Error, HttpResponse, HttpServer, Responder};
+use env_logger::Env;
+use paperclip::actix::{
+    api_v2_operation,
+    // If you prefer the macro syntax for defining routes, import the paperclip macros
+    get,
+    post,
+    // use this instead of actix_web::web
+    web::{self, Json, Path, Query},
+    Apiv2Schema,
+    // extension trait for actix_web::App and proc-macro attributes
+    OpenApiExt,
 };
 use serde::{Deserialize, Serialize};
-use env_logger::Env;
 
 // This struct represents state
 struct AppState {
@@ -12,28 +19,29 @@ struct AppState {
     app_version: String,
 }
 
-#[derive(Deserialize)]
-struct PathInfo {
-    user_id: u32,
-    friend: String,
-}
-
-#[derive(Deserialize)]
+#[derive(Deserialize, Apiv2Schema)]
 struct QueryInfo {
     username: Option<String>,
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Apiv2Schema)]
 struct BodyInfo {
     username: String,
 }
 
-#[derive(Serialize)]
+#[derive(Deserialize, Apiv2Schema)]
+struct PathInfo {
+    user_id: uuid::Uuid,
+    friend: String,    
+}
+
+#[derive(Serialize, Apiv2Schema)]
 struct IPostResponse<T> {
     message: String,
     data: T,
 }
 
+#[api_v2_operation]
 #[get("/")]
 async fn hello(data: web::Data<AppState>) -> impl Responder {
     let app_name = &data.app_name; // <- get app_name
@@ -41,43 +49,38 @@ async fn hello(data: web::Data<AppState>) -> impl Responder {
     HttpResponse::Ok().body(format!("Hello2 to {app_name}, {app_version}!")) // <- response with app_name
 }
 
-#[post("/echo")]
-async fn echo(req_body: String) -> impl Responder {
-    HttpResponse::Ok().body(req_body)
-}
-
 /// extract path info from "/users/{user_id}/{friend}" url
 /// extract path info using serde
-#[get("/users/{user_id}/{friend}")] // <- define path parameters
+#[api_v2_operation]
+#[get("/users/{friend}/{user_id}")] // <- define path parameters
 async fn get_user(
-    info: web::Path<PathInfo>,
-    query: web::Query<QueryInfo>,
-) -> Result<String, Error> {
-    if let Some(username) = &query.username {
-        Ok(format!(
+    info: Path<PathInfo>,
+    query: Query<QueryInfo>,
+) -> Result<Json<IPostResponse<String>>, Error> {
+    let result = if let Some(username) = &query.username {
+        format!(
             "Welcome {}, user_id {}, username {}! ",
             info.friend, info.user_id, username
-        ))
+        )
     } else {
-        Ok(format!(
-            "Welcome {}, user_id {}! ",
-            info.friend, info.user_id
-        ))
-    }
+        format!("Welcome {}, user_id {}! ", info.friend, info.user_id)
+    };
+    let response = IPostResponse {
+        data: result,
+        message: String::from("Data got sucessfully"),
+    };
+    Ok(web::Json(response))
 }
 
 /// deserialize `Info` from request's body
+#[api_v2_operation]
 #[post("/submit")]
-async fn submit(body_info: web::Json<BodyInfo>) -> Result<Json<IPostResponse<String>>, Error> {
+async fn submit(body_info: Json<BodyInfo>) -> Result<Json<IPostResponse<String>>, Error> {
     let response = IPostResponse {
         data: format!("Welcome {}!", body_info.username),
         message: String::from("Data created sucessfully"),
     };
     Ok(web::Json(response))
-}
-
-async fn manual_hello() -> impl Responder {
-    HttpResponse::Ok().body("Hey there!")
 }
 
 #[actix_web::main]
@@ -86,6 +89,8 @@ async fn main() -> std::io::Result<()> {
 
     HttpServer::new(|| {
         App::new()
+            // Record services and routes from this line.
+            .wrap_api()
             .wrap(Logger::default())
             .wrap(Logger::new("%a %{User-Agent}i"))
             .app_data(web::Data::new(AppState {
@@ -93,10 +98,13 @@ async fn main() -> std::io::Result<()> {
                 app_version: String::from("v1"),
             }))
             .service(hello)
-            .service(echo)
             .service(get_user)
             .service(submit)
-            .route("/hey", web::get().to(manual_hello))
+            // Mount the v2/Swagger JSON spec at this path.
+            .with_json_spec_at("/api/spec/v2")
+            .with_swagger_ui_at("/docs")
+            // IMPORTANT: Build the app!
+            .build()
     })
     .bind(("127.0.0.1", 8080))?
     .run()
