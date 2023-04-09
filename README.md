@@ -25,6 +25,12 @@ cargo install cargo-edit
 
 cargo-edit package helps add packages in cargo add <any_package> format
 
+Create new cargo project
+```rust
+cargo new actix_demo
+```
+
+
 ```rust
 cargo add <any_package>
 ```
