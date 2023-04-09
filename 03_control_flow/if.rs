@@ -25,7 +25,7 @@ fn main() {
 
 
     let condition = true;
-    let number = if condition { 5 } else { 6 }; //variable binding with a conditional expression
+    let number = if condition { 5 } else { 6 }; //Ternary variable binding with a conditional expression
     println!("The value of number is: {number}");
 
     

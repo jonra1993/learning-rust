@@ -64,6 +64,27 @@ path = "04_ownership/reference_function.rs"
 name = "slices"
 path = "04_ownership/slices.rs"
 
+[[bin]]
+name = "basic_structure"
+path = "05_structs/basic_structure.rs"
+
+[[bin]]
+name = "methods"
+path = "05_structs/methods.rs"
+
+[[bin]]
+name = "enums"
+path = "06_another_patterns/enums.rs"
+
+[[bin]]
+name = "option_enum"
+path = "06_another_patterns/option_enum.rs"
+
+[[bin]]
+name = "match"
+path = "06_another_patterns/match.rs"
+
+
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
