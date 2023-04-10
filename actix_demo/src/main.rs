@@ -69,7 +69,7 @@ async fn get_user(
         data: result,
         message: String::from("Data got sucessfully"),
     };
-    Ok(web::Json(response))
+    Ok(Json(response))
 }
 
 /// deserialize `Info` from request's body
@@ -80,7 +80,7 @@ async fn submit(body_info: Json<BodyInfo>) -> Result<Json<IPostResponse<String>>
         data: format!("Welcome {}!", body_info.username),
         message: String::from("Data created sucessfully"),
     };
-    Ok(web::Json(response))
+    Ok(Json(response))
 }
 
 #[actix_web::main]
