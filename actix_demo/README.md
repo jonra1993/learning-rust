@@ -1,3 +1,6 @@
+## Update packages
+cargo update
+
 
 cargo add actix
 cargo add serde

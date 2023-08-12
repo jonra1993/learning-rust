@@ -52,7 +52,7 @@ async fn hello(data: web::Data<AppState>) -> impl Responder {
 /// extract path info from "/users/{user_id}/{friend}" url
 /// extract path info using serde
 #[api_v2_operation]
-#[get("/users/{friend}/{user_id}")] // <- define path parameters
+#[get("/users/{user_id}/{friend}")] // <- define path parameters
 async fn get_user(
     info: Path<PathInfo>,
     query: Query<QueryInfo>,
